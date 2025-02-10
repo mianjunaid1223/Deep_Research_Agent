@@ -1,0 +1,9 @@
+flask
+python-dotenv
+langchain
+faiss-cpu
+sentence-transformers
+beautifulsoup4
+requests
+litellm
+langchain-google-genai

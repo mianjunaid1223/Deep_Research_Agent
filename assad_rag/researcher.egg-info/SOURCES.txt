@@ -1,0 +1,7 @@
+README.md
+setup.py
+researcher.egg-info/PKG-INFO
+researcher.egg-info/SOURCES.txt
+researcher.egg-info/dependency_links.txt
+researcher.egg-info/requires.txt
+researcher.egg-info/top_level.txt
