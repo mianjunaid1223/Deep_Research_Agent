@@ -3,13 +3,14 @@
   <head>
     <title>Scientific Research Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prismjs/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prismjs/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prismjs/1.29.0/prism.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prismjs/1.29.0/components/prism-python.min.js" defer></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/prismjs/1.29.0/themes/prism-tomorrow.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
     <style>
       @font-face {
         font-family: "JetBrains Mono";
@@ -21,241 +22,1206 @@
         font-family: "JetBrains Mono", monospace;
       }
 
-      .message-appear {
-        animation: messageAppear 0.3s ease-out forwards;
+      body {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        color: #e2e8f0;
+        position: relative;
+        overflow: hidden;
       }
 
-      @keyframes messageAppear {
-        from {
-          opacity: 0;
-          transform: translateY(5px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+
+
+      body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15), transparent 25%),
+          radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15), transparent 25%);
+        pointer-events: none;
       }
 
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 8px;
+      .app-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-height: 100vh;
+        position: relative;
+        z-index: 1;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background-color: #e5e5f700;
+background-image: radial-gradient(#5d28da67 1px, #e5e5f700 1px);
+background-size: 20px 20px;
+z-index: 1;
       }
 
-      .custom-scrollbar::-webkit-scrollbar-track {
-        background: #1a1a1a;
+      .header {
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        padding: 1rem;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
       }
 
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #404040;
-        border-radius: 4px;
-      }
-
-      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #4a4a4a;
-      }
-
-      .system-status {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.75rem;
-      }
-
-      .grid-bg {
-        background-image: radial-gradient(circle, #333333 1px, transparent 1px);
-        background-size: 30px 30px;
-        background-position: 0 0;
-        opacity: 0.1;
-      }
-
-      .header-highlight {
-        background: linear-gradient(90deg, #1a1a1a 0%, transparent 100%);
-      }
-
-      .message-hover {
-        transition: all 0.2s ease;
-      }
-
-      .message-hover:hover {
-        transform: translateX(2px);
-        border-color: #404040;
+      .messages-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+        margin-bottom: 0.5rem;
+        scroll-behavior: smooth;
       }
 
       .input-container {
-        background: linear-gradient(
-          180deg,
-          rgba(24, 24, 27, 0) 0%,
-          rgba(24, 24, 27, 0.9) 100%
-        );
+        position: relative;
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(99, 102, 241, 0.2);
+        padding: 1.25rem;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .input-wrapper {
+        display: flex;
+        gap: 0.75rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(30, 30, 60, 0.4);
+        padding: 0.5rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Add new styles for the action buttons */
+      .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+        padding: 0 0.5rem;
+      }
+
+      .action-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.75rem;
+        background: rgba(30, 30, 60, 0.4);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        color: #e2e8f0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .action-button:hover {
+        background: rgba(30, 30, 60, 0.6);
+        border-color: rgba(99, 102, 241, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .action-button svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
+      .show-button {
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        color: #8b5cf6;
+        cursor: pointer;
+        font-size: 0.9rem;
+        padding: 0.75rem 1.25rem;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.75rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .show-button:hover {
+        background: rgba(99, 102, 241, 0.25);
+        border-color: rgba(99, 102, 241, 0.4);
+        color: #6366f1;
+        transform: translateY(-1px);
+      }
+
+      .show-button svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        transition: transform 0.2s ease;
+      }
+
+      .show-button[aria-expanded="true"] svg {
+        transform: rotate(180deg);
+      }
+
+      .hidden-content {
+        display: none;
+      }
+
+      /* Add new styles for Gemini-like interface */
+      .export-button-container {
+        display: none;
+        position: absolute;
+        right: 1rem;
+        top: -3.5rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .export-button-container.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .export-button {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+      }
+
+      .export-button svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
+      #query {
+        background: rgba(30, 30, 60, 0.3);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        color: #e2e8f0;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        resize: none;
+        transition: all 0.2s ease;
+        width: 100%;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      #query:focus {
+        outline: none;
+        border-color: rgba(99, 102, 241, 0.4);
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+      }
+
+      #send {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+      }
+
+      #send:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+      }
+
+      /* Gemini-like message styles */
+      .message-appear {
+        max-width: 48rem;
+        margin-left: auto;
+        margin-right: auto;
+        backdrop-filter: blur(10px);
+      }
+
+      .user-message {
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .assistant-message {
+        background: rgba(30, 30, 60, 0.4);
+        border: 1px solid #8b5cf633;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .message-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .searching-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #a78bfa;
+        font-size: 0.95rem;
+        padding: 1rem;
+        background: rgba(99, 102, 241, 0.1);
+        border-radius: 0.75rem;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .dots {
+        display: flex;
+        gap: 0.4rem;
+      }
+
+      .dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        background-color: #a78bfa;
+        border-radius: 50%;
+        animation: pulse 1.4s infinite;
+      }
+
+      .dot:nth-child(2) { animation-delay: 0.2s; }
+      .dot:nth-child(3) { animation-delay: 0.4s; }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(0.8); opacity: 0.5; }
+        50% { transform: scale(1.2); opacity: 1; }
+      }
+
+      .sources-section {
+        margin-top: 1.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid rgba(99, 102, 241, 0.2);
+      }
+
+      .source-link {
+        display: block;
+        padding: 0.75rem 1rem;
+        margin: 0.5rem 0;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 0.75rem;
+        color: #a78bfa;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+        word-break: break-all;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .source-link:hover {
+        background: rgba(99, 102, 241, 0.15);
+        border-color: rgba(99, 102, 241, 0.3);
+        transform: translateX(4px);
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+      }
+
+      .markdown-body {
+        color: #e2e8f0;
+        background: transparent;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .markdown-body pre {
+        background: rgba(30, 30, 60, 0.7) !important;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 0.75rem;
+      }
+
+      .markdown-body code {
+        background: rgba(30, 30, 60, 0.7) !important;
+        color: #a78bfa;
+        border-radius: 0.375rem;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(30, 30, 60, 0.3);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(99, 102, 241, 0.3);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(99, 102, 241, 0.5);
+      }
+
+      /* Status indicator */
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #6366f1;
+        box-shadow: 0 0 8px #6366f1;
+      }
+
+      /* Technical details section */
+      .technical-details {
+        background: rgba(30, 30, 60, 0.6);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        margin-top: 0.5rem;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      /* Dropup menu styles */
+      .dropup-container {
+        position: absolute;
+        left: 1rem;
+        bottom: 100%;
+        margin-bottom: 0.5rem;
+        display: none;
+      }
+
+      .dropup-menu {
+        background: rgba(30, 30, 60, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 0.75rem;
+        padding: 0.5rem;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        min-width: 200px;
+      }
+
+      .dropup-trigger {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        background: rgba(30, 30, 60, 0.4);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        color: #e2e8f0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .dropup-trigger:hover {
+        background: rgba(30, 30, 60, 0.6);
+        border-color: rgba(99, 102, 241, 0.3);
+      }
+
+      /* Technical response styles */
+      .response-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .general-response {
+        background: rgba(30, 30, 60, 0.4);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+      }
+
+      .technical-section {
+        margin-top: 1rem;
+      }
+
+      .technical-details {
+        background: rgba(20, 20, 40, 0.6);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-top: 0.5rem;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      .technical-details h1 {
+        color: #8b5cf6;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      .technical-details h2 {
+        color: #a78bfa;
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .pdf-export-dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .pdf-export-dialog.visible {
+        opacity: 1;
+        display: flex;
+      }
+
+      .dialog-content {
+        background: rgba(30, 30, 60, 0.95);
+        padding: 2rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        width: 90%;
+        max-width: 500px;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .pdf-export-dialog.visible .dialog-content {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .dialog-content h3 {
+        color: #e2e8f0;
+        margin-bottom: 1rem;
+      }
+
+      .dialog-content textarea {
+        width: 100%;
+        background: rgba(30, 30, 60, 0.4);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        color: #e2e8f0;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        resize: vertical;
+      }
+
+      .dialog-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+      }
+
+      .dialog-buttons button {
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .dialog-buttons button:first-child {
+        background: rgba(30, 30, 60, 0.4);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        color: #e2e8f0;
+      }
+
+      .dialog-buttons button:last-child {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border: none;
+        color: white;
+      }
+
+      .loading-dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .loading-dialog.visible {
+        opacity: 1;
+        display: flex;
+      }
+
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #6366f1;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      .download-dialog {
+        background: rgba(30, 30, 60, 0.95);
+        padding: 2rem;
+        border-radius: 1rem;
+        text-align: center;
+        max-width: 400px;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+      }
+
+      .loading-dialog.visible .download-dialog {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .download-button {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        margin-top: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #e2e8f0;
+      }
+
+      .form-select {
+        width: 100%;
+        padding: 0.5rem;
+        background: rgba(30, 30, 60, 0.4);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        color: #e2e8f0;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .form-select option {
+        background: #1a1a2e;
+        color: #e2e8f0;
+      }
+
+      .welcome-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        max-width: 600px;
+        width: 90%;
+        padding: 2rem;
+        background: rgba(30, 30, 60, 0.4);
+        border-radius: 1rem;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 10;
+      }
+
+      .welcome-container.fade-out {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+      }
+
+      .welcome-title {
+        color: #8b5cf6;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .welcome-list {
+        text-align: left;
+        margin: 1.5rem 0;
+        padding-left: 1.5rem;
+      }
+
+      .welcome-list li {
+        margin: 0.75rem 0;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .welcome-list li::before {
+        content: '•';
+        color: #8b5cf6;
+      }
+
+      .welcome-footer {
+        color: #a78bfa;
+        font-size: 0.9rem;
+        margin-top: 1.5rem;
       }
     </style>
   </head>
-  <body class="bg-black text-gray-200 min-h-screen flex flex-col relative">
-    <div class="grid-bg fixed inset-0 pointer-events-none"></div>
-
-    <!-- Header -->
-    <header
-      class="bg-gradient-to-b from-zinc-900 to-black border-b border-zinc-800 p-4 relative z-10"
-    >
-      <div class="max-w-screen-xl mx-auto flex justify-between items-center">
-        <div class="flex items-center space-x-6">
-          <div>
-            <h1 class="text-xl font-mono font-bold text-white">
+  <body>
+    <div class="app-container">
+      <header class="header">
+        <div class="flex items-center justify-between max-w-[1200px] mx-auto">
+          <div class="flex items-center space-x-3">
+            <h1 class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600">
               Scientific Research Assistant
             </h1>
-            <div class="flex items-center space-x-4 mt-1">
-              <span class="text-xs text-zinc-500 font-mono">v1.0.2</span>
-              <span class="text-xs text-zinc-500 font-mono">|</span>
-              <span class="text-xs text-zinc-500 font-mono"
-                >Model: Gemini-1.5-Flash</span
-              >
-            </div>
+            <span class="text-xs px-2 py-1 rounded-full bg-purple-900/30 border border-purple-500/20">v1.0.7</span>
+          </div>
+          <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span class="text-gray-400">Operational</span>
           </div>
         </div>
-        <div class="flex items-center space-x-6">
-          <div class="system-status text-zinc-600 flex items-center space-x-2">
-            <div class="flex flex-col items-end">
-              <span class="text-xs text-zinc-400">System Status</span>
-              <span class="text-green-500 flex items-center">
-                <span class="h-2 w-2 rounded-full bg-green-500 mr-2"></span>
-                Operational
-              </span>
+      </header>
+
+      <main class="messages-container custom-scrollbar" id="messages">
+        <!-- Messages will be added here -->
+      </main>
+
+      <footer class="input-container">
+        <div class="max-w-[1200px] mx-auto relative">
+          <div class="export-button-container" id="exportButtonContainer">
+            <button id="exportPDF" class="export-button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <span>Write Research Paper</span>
+            </button>
+          </div>
+          
+          <!-- Replace action buttons with dropup -->
+          <div class="dropup-container" id="dropupMenu">
+            <div class="dropup-menu">
+              <button class="action-button" id="uploadButton">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                Upload file
+              </button>
+              <button class="action-button" id="pasteLink">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                </svg>
+                Paste link
+              </button>
             </div>
           </div>
-        </div>
-      </div>
-    </header>
 
-    <!-- Main Content -->
-    <main
-      class="flex-1 flex flex-col max-w-screen-xl w-full mx-auto p-4 relative z-10"
-    >
-      <!-- Messages Container -->
-      <div
-        id="messages"
-        class="flex-1 max-h-[380px] overflow-y-auto overflow-x-auto space-y-4 mb-4 custom-scrollbar pb-6"
-      ></div>
-
-      <!-- Input Section -->
-      <div
-        class="fixed-bottom input-container border border-zinc-800 rounded-lg backdrop-blur-sm"
-      >
-        <form id="queryForm" class="flex items-center space-x-4 p-4">
-          <div class="flex-grow relative">
-            <textarea
-              id="query"
-              rows="3"
-              class="w-full bg-black/30 border border-zinc-800 rounded-lg p-4 text-gray-300 placeholder-zinc-600 font-mono text-sm resize-none focus:ring-1 focus:ring-zinc-700 focus:border-zinc-700 transition-all custom-scrollbar"
-              placeholder="Enter your research query..."
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-6 py-3 rounded-lg font-mono text-sm transition-all duration-200 hover:shadow-lg hover:shadow-zinc-900/50 flex items-center space-x-2"
-          >
-            <span>Execute Query</span>
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
+        <div class="input-wrapper">
+            <button class="dropup-trigger" id="dropupTrigger">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+              </svg>
+            </button>
+          <textarea
+            id="query"
+              placeholder="Ask a scientific question..."
+            rows="1"
+            class="flex-grow"
+          ></textarea>
+          <button id="send" class="flex-shrink-0">
+            <span>Send</span>
           </button>
-        </form>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <input type="file" id="fileInput" style="display: none">
+
+    <!-- Add this HTML just before the export button -->
+    <div class="pdf-export-dialog" id="pdfExportDialog" style="display: none;">
+      <div class="dialog-content">
+        <h3>Create Research Paper</h3>
+        
+        <div class="form-group">
+          <label for="paperStandard">Research Paper Standard:</label>
+          <select id="paperStandard" class="form-select">
+            <option value="ITTT">ITTT Standard (International Technology, Education, and Training)</option>
+            <option value="IEEE">IEEE Format</option>
+            <option value="APA">APA Format</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="pdfInstructions">Additional Instructions:</label>
+          <textarea 
+            id="pdfInstructions" 
+            placeholder="Add any specific instructions for the research paper..."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="formattingOptions">Formatting Preferences (optional):</label>
+          <textarea 
+            id="formattingOptions" 
+            placeholder="Add any specific formatting preferences..."
+            rows="2"
+          ></textarea>
+        </div>
+
+        <div class="dialog-buttons">
+          <button onclick="cancelPdfExport()">Cancel</button>
+          <button onclick="confirmPdfExport()">Generate PDF</button>
+        </div>
       </div>
-    </main>
+    </div>
+
+    <!-- Add these dialogs just before closing body tag -->
+    <div id="loadingDialog" class="loading-dialog" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p class="text-white mt-4">Generating Research Paper...</p>
+    </div>
+
+    <div id="downloadDialog" class="loading-dialog" style="display: none;">
+        <div class="download-dialog">
+            <h3 class="text-xl text-white mb-4">Research Paper Ready!</h3>
+            <p class="text-gray-300 mb-4">Your research paper has been generated successfully.</p>
+            <p class="text-gray-300 mb-6 text-sm italic">Please read it carefully and customize it as needed for your specific requirements.</p>
+            <button id="downloadButton" class="download-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+                Download PDF
+            </button>
+            <button onclick="closeDownloadDialog()" class="text-gray-400 mt-4 hover:text-white">Close</button>
+        </div>
+    </div>
 
     <script>
-      const form = document.getElementById("queryForm");
+      // Generate a unique session ID
+      const sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
+      
       const messages = document.getElementById("messages");
+      const queryInput = document.getElementById("query");
+      const queryForm = document.createElement("form");
+      queryForm.id = "queryForm";
 
-      function createMessageElement(content, type = "assistant") {
-        const messageDiv = document.createElement("div");
-        messageDiv.className =
-          "message-appear bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 message-hover";
-
-        const innerDiv = document.createElement("div");
-        innerDiv.className = "flex items-start space-x-3";
-
-        const avatar = document.createElement("div");
-        avatar.className =
-          "w-6 h-6 rounded-lg bg-gradient-to-b flex items-center justify-center text-xs font-mono";
-
-        if (type === "user") {
-          avatar.className += " from-zinc-600 to-zinc-700";
-          avatar.textContent = "U";
-        } else if (type === "S") {
-          avatar.className += " from-zinc-800 to-zinc-900";
-          avatar.textContent = "S";
-        } else {
-          avatar.className += " from-zinc-700 to-zinc-800";
-          avatar.textContent = "S";
-        }
-
-        const contentDiv = document.createElement("div");
-        contentDiv.className = "flex-1 prose prose-invert max-w-none text-sm";
-        contentDiv.innerHTML = content; // Directly set the innerHTML
-
-        innerDiv.appendChild(avatar);
-        innerDiv.appendChild(contentDiv);
-        messageDiv.appendChild(innerDiv);
-
-        return messageDiv;
-      }
-
-      function addMessage(content, type = "assistant") {
-        // Remove ```html at the beginning and ``` at the end
-        if (content.startsWith("```html")) {
-          content = content.slice(7, -3).trim();
-        } else if (content.startsWith("`````")) {
-          content = content.slice(3, -3).trim();
-        }
-
-        const messageElement = createMessageElement(content, type);
-        messages.appendChild(messageElement);
-        messages.scrollTop = messages.scrollHeight;
-      }
-
-      form.addEventListener("submit", async (e) => {
+      async function submitQuery(e) {
         e.preventDefault();
-        const queryInput = document.getElementById("query");
         const query = queryInput.value.trim();
 
         if (!query) return;
 
-        addMessage(query, "user");
+        // Remove welcome message if it exists
+        const welcomeContainer = document.querySelector('.welcome-container');
+        if (welcomeContainer) {
+            welcomeContainer.classList.add('fade-out');
+            setTimeout(() => {
+                welcomeContainer.remove();
+            }, 300);
+        }
+
+        // Add user message
+        addMessage(query, true);
+
+        // Clear input
         queryInput.value = "";
+        queryInput.style.height = "40px";
+
+        // Add loading indicator
+        const loadingDiv = document.createElement('div');
+        loadingDiv.classList.add('message-appear', 'p-4', 'rounded-lg', 'mb-4', 'bg-gray-900/30', 'border', 'border-gray-900/40');
+        loadingDiv.innerHTML = `
+          <div class="searching-indicator">
+            <span>Processing request</span>
+            <div class="dots">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
+        `;
+        messages.appendChild(loadingDiv);
 
         try {
-          const response = await fetch("/api/chat", {
+          const response = await fetch("/api/query", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ query: query }),
+            body: JSON.stringify({
+              query: query,
+              sessionId: sessionId
+            }),
           });
 
-          if (!response.ok) {
-            throw new Error("Network response was not ok: " + response.status);
-          }
-
           const data = await response.json();
-          addMessage(data.response);
+
+          // Remove loading indicator
+          messages.removeChild(loadingDiv);
+
+          if (response.ok) {
+            // Add assistant response with sources
+            addMessage({
+              response: data.response,
+              sources: data.sources
+            }, false);
+          } else {
+            // Add error message
+            addMessage(`Error: ${data.error || 'Something went wrong'}`, false);
+          }
         } catch (error) {
-          addMessage("```error\nError: " + error.message + "\n```");
-          console.error("Error:", error);
+          // Remove loading indicator
+          messages.removeChild(loadingDiv);
+          // Add error message
+          addMessage(`Error: ${error.message}`, false);
+        }
+
+        // Scroll to bottom
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      queryForm.addEventListener("submit", submitQuery);
+
+      // Handle Enter key (without shift) to submit
+      queryInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          queryForm.dispatchEvent(new Event("submit"));
         }
       });
 
-      const textarea = document.getElementById("query");
-      textarea.addEventListener("input", function () {
-        this.style.height = "auto";
-        this.style.height = this.scrollHeight + "px";
+      // Auto-resize input
+      queryInput.addEventListener("input", function() {
+        this.style.height = "40px";
+        const newHeight = Math.min(this.scrollHeight, 120);
+        this.style.height = newHeight + "px";
       });
+
+      const sendButton = document.getElementById("send");
+      sendButton.addEventListener("click", () => {
+        queryForm.dispatchEvent(new Event("submit"));
+      });
+
+      // Replace the initial welcome message with this
+      const welcomeContainer = document.createElement('div');
+      welcomeContainer.classList.add('welcome-container');
+      welcomeContainer.innerHTML = `
+          <h1 class="welcome-title">Welcome to Scientific Research Assistant</h1>
+          <ul class="welcome-list">
+              <li>Ask scientific questions for detailed analysis</li>
+              <li>Share URLs for comprehensive research insights</li>
+              <li>Engage in continuous dialogue with follow-up questions</li>
+          </ul>
+          <p class="welcome-footer">Start by asking a question or sharing a research topic</p>
+      `;
+      messages.appendChild(welcomeContainer);
+
+      function addMessage(message, isUser) {
+        const messagesContainer = document.querySelector('.messages-container');
+        const messageDiv = document.createElement('div');
+        
+        const baseClasses = ['message-appear', 'message-hover', 'p-4', 'rounded-lg', 'mb-4', 'text-sm', 'leading-relaxed'];
+        messageDiv.classList.add(...baseClasses);
+        
+        // Handle welcome message differently
+        if (isUser === 'welcome') {
+            messageDiv.classList.add('assistant-message', 'welcome-message');
+        } else {
+            messageDiv.classList.add(isUser ? 'user-message' : 'assistant-message');
+            
+            // Show export button after first real assistant message
+            if (!isUser && !document.querySelector('.assistant-message:not(.welcome-message)')) {
+                const exportContainer = document.getElementById('exportButtonContainer');
+                exportContainer.style.display = 'block';
+                void exportContainer.offsetWidth;
+                exportContainer.classList.add('visible');
+            }
+        }
+
+        // Create content div
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('markdown-body');
+        
+        // Render markdown content
+        if (!isUser && typeof message === 'object' && message.response) {
+          const responseContainer = document.createElement('div');
+          responseContainer.classList.add('response-container');
+          
+          // Add general response
+          const generalResponse = document.createElement('div');
+          generalResponse.classList.add('general-response', 'markdown-body');
+          generalResponse.innerHTML = marked.parse(message.response.general);
+          responseContainer.appendChild(generalResponse);
+          
+          // Add technical section
+          const technicalSection = document.createElement('div');
+          technicalSection.classList.add('technical-section');
+          
+          const showButton = document.createElement('button');
+          showButton.classList.add('show-button');
+          showButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+            <span>Show Technical Details</span>
+          `;
+          showButton.setAttribute('aria-expanded', 'false');
+          
+          const technicalContent = document.createElement('div');
+          technicalContent.classList.add('technical-details', 'hidden-content', 'markdown-body');
+          technicalContent.innerHTML = marked.parse(message.response.technical);
+          
+          showButton.onclick = () => {
+            const isHidden = technicalContent.classList.contains('hidden-content');
+            technicalContent.classList.toggle('hidden-content');
+            showButton.setAttribute('aria-expanded', isHidden);
+            showButton.querySelector('span').textContent = 
+              isHidden ? 'Hide Technical Details' : 'Show Technical Details';
+          };
+          
+          technicalSection.appendChild(showButton);
+          technicalSection.appendChild(technicalContent);
+          responseContainer.appendChild(technicalSection);
+          
+          messageDiv.appendChild(responseContainer);
+        } else {
+          // Handle user messages or other content types
+          contentDiv.innerHTML = marked.parse(message.response || message);
+        messageDiv.appendChild(contentDiv);
+        }
+
+        // Add sources section if available
+        if (message.sources && message.sources.length > 0) {
+          const sourcesDiv = document.createElement('div');
+          sourcesDiv.classList.add('sources-section');
+          
+          const sourcesTitle = document.createElement('h4');
+          sourcesTitle.textContent = 'Sources:';
+          sourcesTitle.classList.add('text-sm', 'font-semibold', 'mb-2', 'text-purple-300');
+          sourcesDiv.appendChild(sourcesTitle);
+
+          message.sources.forEach(source => {
+            const sourceLink = document.createElement('a');
+            sourceLink.href = source;
+            sourceLink.textContent = source;
+            sourceLink.target = '_blank';
+            sourceLink.rel = 'noopener noreferrer';
+            sourceLink.classList.add('source-link');
+            sourcesDiv.appendChild(sourceLink);
+          });
+
+          messageDiv.appendChild(sourcesDiv);
+        }
+
+        messagesContainer.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        // Highlight code if Prism is defined
+        if (typeof Prism !== 'undefined') {
+          Prism.highlightAll();
+        }
+      }
+
+      // Add file upload functionality
+      const fileInput = document.getElementById('fileInput');
+      const uploadButton = document.getElementById('uploadButton');
+      
+      uploadButton.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('sessionId', sessionId);
+          
+          try {
+            const response = await fetch('/api/upload', {
+              method: 'POST',
+              body: formData
+            });
+            const data = await response.json();
+            if (response.ok) {
+              addMessage(`Uploaded file: ${file.name}`, true);
+            } else {
+              addMessage(`Error uploading file: ${data.error}`, false);
+            }
+          } catch (error) {
+            addMessage(`Error uploading file: ${error.message}`, false);
+          }
+        }
+      });
+
+      // Add paste link functionality
+      const pasteLinkButton = document.getElementById('pasteLink');
+      pasteLinkButton.addEventListener('click', () => {
+        queryInput.value = 'Analyze this URL: ';
+        queryInput.focus();
+      });
+
+      // Add export to PDF functionality
+      const exportPDFButton = document.getElementById('exportPDF');
+      exportPDFButton.addEventListener('click', showPdfExportDialog);
+
+      // Add dropup functionality
+      const dropupTrigger = document.getElementById('dropupTrigger');
+      const dropupMenu = document.getElementById('dropupMenu');
+      
+      dropupTrigger.addEventListener('click', () => {
+        const isVisible = dropupMenu.style.display === 'block';
+        dropupMenu.style.display = isVisible ? 'none' : 'block';
+      });
+
+      // Close dropup when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!dropupTrigger.contains(e.target) && !dropupMenu.contains(e.target)) {
+          dropupMenu.style.display = 'none';
+        }
+      });
+
+      function showPdfExportDialog() {
+        const dialog = document.getElementById('pdfExportDialog');
+        dialog.style.display = 'flex';
+        // Force reflow
+        void dialog.offsetWidth;
+        dialog.classList.add('visible');
+      }
+
+      function cancelPdfExport() {
+        const dialog = document.getElementById('pdfExportDialog');
+        dialog.classList.remove('visible');
+        setTimeout(() => {
+            dialog.style.display = 'none';
+        }, 300);
+      }
+
+      async function confirmPdfExport() {
+        const pdfDialog = document.getElementById('pdfExportDialog');
+        pdfDialog.classList.remove('visible');
+        setTimeout(() => {
+            pdfDialog.style.display = 'none';
+        }, 300);
+
+        const loadingDialog = document.getElementById('loadingDialog');
+        loadingDialog.style.display = 'flex';
+        void loadingDialog.offsetWidth;
+        loadingDialog.classList.add('visible');
+
+        try {
+          const instructions = document.getElementById('pdfInstructions').value;
+          const paperStandard = document.getElementById('paperStandard').value;
+          const formattingOptions = document.getElementById('formattingOptions').value;
+          
+          const response = await fetch('/api/export-pdf', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              sessionId: sessionId,
+              instructions: instructions,
+              paperStandard: paperStandard,
+              formattingOptions: formattingOptions
+            })
+          });
+          
+          const data = await response.json();
+          loadingDialog.classList.remove('visible');
+          setTimeout(() => {
+              loadingDialog.style.display = 'none';
+              const downloadDialog = document.getElementById('downloadDialog');
+              downloadDialog.style.display = 'flex';
+              void downloadDialog.offsetWidth;
+              downloadDialog.classList.add('visible');
+          }, 300);
+          
+          if (response.ok) {
+            const downloadButton = document.getElementById('downloadButton');
+            downloadButton.onclick = () => {
+              window.location.href = data.download_url;
+            };
+          } else {
+            addMessage(`Error generating PDF: ${data.error}`, false);
+          }
+        } catch (error) {
+          loadingDialog.classList.remove('visible');
+          setTimeout(() => {
+              loadingDialog.style.display = 'none';
+          }, 300);
+          addMessage(`Error generating PDF: ${error.message}`, false);
+        }
+      }
+
+      function closeDownloadDialog() {
+        const dialog = document.getElementById('downloadDialog');
+        dialog.classList.remove('visible');
+        setTimeout(() => {
+            dialog.style.display = 'none';
+        }, 300);
+      }
     </script>
   </body>
 </html>
