@@ -177,14 +177,6 @@ z-index: 1;
         position: absolute;
         right: 1rem;
         top: -3.5rem;
-        opacity: 0;
-        transform: translateY(10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-      }
-
-      .export-button-container.visible {
-        opacity: 1;
-        transform: translateY(0);
       }
 
       .export-button {
@@ -488,239 +480,6 @@ z-index: 1;
         margin-top: 1.5rem;
         margin-bottom: 0.75rem;
       }
-
-      .pdf-export-dialog {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
-
-      .pdf-export-dialog.visible {
-        opacity: 1;
-        display: flex;
-      }
-
-      .dialog-content {
-        background: rgba(30, 30, 60, 0.95);
-        padding: 2rem;
-        border-radius: 1rem;
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        width: 90%;
-        max-width: 500px;
-        transform: translateY(20px);
-        opacity: 0;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      }
-
-      .pdf-export-dialog.visible .dialog-content {
-        transform: translateY(0);
-        opacity: 1;
-      }
-
-      .dialog-content h3 {
-        color: #e2e8f0;
-        margin-bottom: 1rem;
-      }
-
-      .dialog-content textarea {
-        width: 100%;
-        background: rgba(30, 30, 60, 0.4);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        color: #e2e8f0;
-        padding: 0.75rem;
-        border-radius: 0.5rem;
-        margin-bottom: 1rem;
-        resize: vertical;
-      }
-
-      .dialog-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-      }
-
-      .dialog-buttons button {
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .dialog-buttons button:first-child {
-        background: rgba(30, 30, 60, 0.4);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        color: #e2e8f0;
-      }
-
-      .dialog-buttons button:last-child {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        border: none;
-        color: white;
-      }
-
-      .loading-dialog {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
-
-      .loading-dialog.visible {
-        opacity: 1;
-        display: flex;
-      }
-
-      .loading-spinner {
-        width: 50px;
-        height: 50px;
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #6366f1;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-
-      .download-dialog {
-        background: rgba(30, 30, 60, 0.95);
-        padding: 2rem;
-        border-radius: 1rem;
-        text-align: center;
-        max-width: 400px;
-        transform: translateY(20px);
-        opacity: 0;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-      }
-
-      .loading-dialog.visible .download-dialog {
-        transform: translateY(0);
-        opacity: 1;
-      }
-
-      .download-button {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        border: none;
-        cursor: pointer;
-        margin-top: 1rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-
-      .form-group {
-        margin-bottom: 1rem;
-      }
-
-      .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: #e2e8f0;
-      }
-
-      .form-select {
-        width: 100%;
-        padding: 0.5rem;
-        background: rgba(30, 30, 60, 0.4);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        color: #e2e8f0;
-        border-radius: 0.5rem;
-        margin-bottom: 1rem;
-      }
-
-      .form-select option {
-        background: #1a1a2e;
-        color: #e2e8f0;
-      }
-
-      .welcome-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        max-width: 600px;
-        width: 90%;
-        padding: 2rem;
-        background: rgba(30, 30, 60, 0.4);
-        border-radius: 1rem;
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        z-index: 10;
-      }
-
-      .welcome-container.fade-out {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-      }
-
-      .welcome-title {
-        color: #8b5cf6;
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .welcome-list {
-        text-align: left;
-        margin: 1.5rem 0;
-        padding-left: 1.5rem;
-      }
-
-      .welcome-list li {
-        margin: 0.75rem 0;
-        color: #e2e8f0;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .welcome-list li::before {
-        content: '•';
-        color: #8b5cf6;
-      }
-
-      .welcome-footer {
-        color: #a78bfa;
-        font-size: 0.9rem;
-        margin-top: 1.5rem;
-      }
     </style>
   </head>
   <body>
@@ -795,66 +554,6 @@ z-index: 1;
 
     <input type="file" id="fileInput" style="display: none">
 
-    <!-- Add this HTML just before the export button -->
-    <div class="pdf-export-dialog" id="pdfExportDialog" style="display: none;">
-      <div class="dialog-content">
-        <h3>Create Research Paper</h3>
-        
-        <div class="form-group">
-          <label for="paperStandard">Research Paper Standard:</label>
-          <select id="paperStandard" class="form-select">
-            <option value="ITTT">ITTT Standard (International Technology, Education, and Training)</option>
-            <option value="IEEE">IEEE Format</option>
-            <option value="APA">APA Format</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="pdfInstructions">Additional Instructions:</label>
-          <textarea 
-            id="pdfInstructions" 
-            placeholder="Add any specific instructions for the research paper..."
-            rows="4"
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="formattingOptions">Formatting Preferences (optional):</label>
-          <textarea 
-            id="formattingOptions" 
-            placeholder="Add any specific formatting preferences..."
-            rows="2"
-          ></textarea>
-        </div>
-
-        <div class="dialog-buttons">
-          <button onclick="cancelPdfExport()">Cancel</button>
-          <button onclick="confirmPdfExport()">Generate PDF</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Add these dialogs just before closing body tag -->
-    <div id="loadingDialog" class="loading-dialog" style="display: none;">
-        <div class="loading-spinner"></div>
-        <p class="text-white mt-4">Generating Research Paper...</p>
-    </div>
-
-    <div id="downloadDialog" class="loading-dialog" style="display: none;">
-        <div class="download-dialog">
-            <h3 class="text-xl text-white mb-4">Research Paper Ready!</h3>
-            <p class="text-gray-300 mb-4">Your research paper has been generated successfully.</p>
-            <p class="text-gray-300 mb-6 text-sm italic">Please read it carefully and customize it as needed for your specific requirements.</p>
-            <button id="downloadButton" class="download-button">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                </svg>
-                Download PDF
-            </button>
-            <button onclick="closeDownloadDialog()" class="text-gray-400 mt-4 hover:text-white">Close</button>
-        </div>
-    </div>
-
     <script>
       // Generate a unique session ID
       const sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
@@ -869,15 +568,6 @@ z-index: 1;
         const query = queryInput.value.trim();
 
         if (!query) return;
-
-        // Remove welcome message if it exists
-        const welcomeContainer = document.querySelector('.welcome-container');
-        if (welcomeContainer) {
-            welcomeContainer.classList.add('fade-out');
-            setTimeout(() => {
-                welcomeContainer.remove();
-            }, 300);
-        }
 
         // Add user message
         addMessage(query, true);
@@ -961,19 +651,13 @@ z-index: 1;
         queryForm.dispatchEvent(new Event("submit"));
       });
 
-      // Replace the initial welcome message with this
-      const welcomeContainer = document.createElement('div');
-      welcomeContainer.classList.add('welcome-container');
-      welcomeContainer.innerHTML = `
-          <h1 class="welcome-title">Welcome to Scientific Research Assistant</h1>
-          <ul class="welcome-list">
-              <li>Ask scientific questions for detailed analysis</li>
-              <li>Share URLs for comprehensive research insights</li>
-              <li>Engage in continuous dialogue with follow-up questions</li>
-          </ul>
-          <p class="welcome-footer">Start by asking a question or sharing a research topic</p>
-      `;
-      messages.appendChild(welcomeContainer);
+      // Initial welcome message
+      addMessage(`Welcome! I'm your scientific research assistant. You can:
+1. Ask me scientific questions
+2. Share a URL for me to analyze
+3. Continue our conversation with follow-up questions
+
+I'll maintain context throughout our session and provide detailed, well-formatted responses with sources.`, false);
 
       function addMessage(message, isUser) {
         const messagesContainer = document.querySelector('.messages-container');
@@ -981,20 +665,11 @@ z-index: 1;
         
         const baseClasses = ['message-appear', 'message-hover', 'p-4', 'rounded-lg', 'mb-4', 'text-sm', 'leading-relaxed'];
         messageDiv.classList.add(...baseClasses);
-        
-        // Handle welcome message differently
-        if (isUser === 'welcome') {
-            messageDiv.classList.add('assistant-message', 'welcome-message');
-        } else {
-            messageDiv.classList.add(isUser ? 'user-message' : 'assistant-message');
-            
-            // Show export button after first real assistant message
-            if (!isUser && !document.querySelector('.assistant-message:not(.welcome-message)')) {
-                const exportContainer = document.getElementById('exportButtonContainer');
-                exportContainer.style.display = 'block';
-                void exportContainer.offsetWidth;
-                exportContainer.classList.add('visible');
-            }
+        messageDiv.classList.add(isUser ? 'user-message' : 'assistant-message');
+
+        // Show export button after first assistant message
+        if (!isUser) {
+          document.getElementById('exportButtonContainer').style.display = 'block';
         }
 
         // Create content div
@@ -1124,7 +799,34 @@ z-index: 1;
 
       // Add export to PDF functionality
       const exportPDFButton = document.getElementById('exportPDF');
-      exportPDFButton.addEventListener('click', showPdfExportDialog);
+      exportPDFButton.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/api/export-pdf', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              sessionId: sessionId
+            })
+          });
+          
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'research-paper.pdf';
+            a.click();
+            window.URL.revokeObjectURL(url);
+          } else {
+            const data = await response.json();
+            addMessage(`Error generating PDF: ${data.error}`, false);
+          }
+        } catch (error) {
+          addMessage(`Error generating PDF: ${error.message}`, false);
+        }
+      });
 
       // Add dropup functionality
       const dropupTrigger = document.getElementById('dropupTrigger');
@@ -1141,87 +843,6 @@ z-index: 1;
           dropupMenu.style.display = 'none';
         }
       });
-
-      function showPdfExportDialog() {
-        const dialog = document.getElementById('pdfExportDialog');
-        dialog.style.display = 'flex';
-        // Force reflow
-        void dialog.offsetWidth;
-        dialog.classList.add('visible');
-      }
-
-      function cancelPdfExport() {
-        const dialog = document.getElementById('pdfExportDialog');
-        dialog.classList.remove('visible');
-        setTimeout(() => {
-            dialog.style.display = 'none';
-        }, 300);
-      }
-
-      async function confirmPdfExport() {
-        const pdfDialog = document.getElementById('pdfExportDialog');
-        pdfDialog.classList.remove('visible');
-        setTimeout(() => {
-            pdfDialog.style.display = 'none';
-        }, 300);
-
-        const loadingDialog = document.getElementById('loadingDialog');
-        loadingDialog.style.display = 'flex';
-        void loadingDialog.offsetWidth;
-        loadingDialog.classList.add('visible');
-
-        try {
-          const instructions = document.getElementById('pdfInstructions').value;
-          const paperStandard = document.getElementById('paperStandard').value;
-          const formattingOptions = document.getElementById('formattingOptions').value;
-          
-          const response = await fetch('/api/export-pdf', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              sessionId: sessionId,
-              instructions: instructions,
-              paperStandard: paperStandard,
-              formattingOptions: formattingOptions
-            })
-          });
-          
-          const data = await response.json();
-          loadingDialog.classList.remove('visible');
-          setTimeout(() => {
-              loadingDialog.style.display = 'none';
-              const downloadDialog = document.getElementById('downloadDialog');
-              downloadDialog.style.display = 'flex';
-              void downloadDialog.offsetWidth;
-              downloadDialog.classList.add('visible');
-          }, 300);
-          
-          if (response.ok) {
-            const downloadButton = document.getElementById('downloadButton');
-            downloadButton.onclick = () => {
-              window.location.href = data.download_url;
-            };
-          } else {
-            addMessage(`Error generating PDF: ${data.error}`, false);
-          }
-        } catch (error) {
-          loadingDialog.classList.remove('visible');
-          setTimeout(() => {
-              loadingDialog.style.display = 'none';
-          }, 300);
-          addMessage(`Error generating PDF: ${error.message}`, false);
-        }
-      }
-
-      function closeDownloadDialog() {
-        const dialog = document.getElementById('downloadDialog');
-        dialog.classList.remove('visible');
-        setTimeout(() => {
-            dialog.style.display = 'none';
-        }, 300);
-      }
     </script>
   </body>
 </html>

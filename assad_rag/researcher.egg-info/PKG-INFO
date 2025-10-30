@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: researcher
+Version: 0.1
+Requires-Dist: flask
+Requires-Dist: python-dotenv
+Requires-Dist: langchain
+Requires-Dist: faiss-cpu
+Requires-Dist: sentence-transformers
+Requires-Dist: beautifulsoup4
+Requires-Dist: requests
+Requires-Dist: litellm
+Requires-Dist: langchain-google-genai

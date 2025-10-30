@@ -5,7 +5,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 import re
-from tools import read_url_content, web_scrape_for_llm, get_search_links, is_valid_url_for_scraping
+from tools import read_url_content, web_scrape_for_llm, get_search_links
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain_community.vectorstores import FAISS
@@ -84,16 +84,7 @@ def get_search_links(query: str) -> list:
                     unique_links = [item.get("link", "") for item in result["items"]]
                     print(f"Found {len(unique_links)} general sources")
             
-            # Add URL validation before returning
-            valid_links = []
-            for url in unique_links:
-                is_valid, _ = is_valid_url_for_scraping(url)
-                if is_valid:
-                    valid_links.append(url)
-                else:
-                    print(f"Skipping invalid URL: {url}")
-            
-            return valid_links[:5]  # Return up to 5 valid links
+            return unique_links
             
         except Exception as e:
             print(f"Search API error: {str(e)}")
@@ -251,12 +242,7 @@ class ResearchSession:
 def process_url(url: str) -> tuple[str, list[str]]:
     """Process a URL and return its content and sources."""
     try:
-        # Validate URL first
-        is_valid, error_message = is_valid_url_for_scraping(url)
-        if not is_valid:
-            return error_message, []
-            
-        content = web_scrape_for_llm(url, max_size_mb=5)
+        content = web_scrape_for_llm(url)
         if content.startswith("Error"):
             return content, []
         return content, [url]
