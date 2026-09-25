@@ -1,6 +1,6 @@
 # Deep Research Agent
 
-[![Year Built](https://img.shields.io/badge/Year%20Built-2025-blue.svg)](#)
+[![Year Built](https://img.shields.io/badge/Year%20Built-2024-blue.svg)](#)
 
 
 Agentic research orchestration engine combining LangChain Google GenAI query expansion, BeautifulSoup web scraping with exponential backoff, and LiteLLM multi-model synthesis to deliver structured technical reports.
